@@ -48,6 +48,9 @@ const ComponentGrid = ({ components }) => (
       <Box p={5} shadow="md" borderWidth="1px" key={component.name}>
         <Heading fontSize="xl">{component.name}</Heading>
         <Text mt={4}>{component.description}</Text>
+        <Text fontSize="sm" color="gray.500">
+          How this might affect you: {component.userImpact}
+        </Text>
         <ComponentStatusIcon status={component.status} />
       </Box>
     ))}
@@ -60,6 +63,11 @@ const IncidentHistory = ({ incidents }) => (
       <Box p={4} shadow="md" borderWidth="1px" key={incident.timestamp}>
         <Text fontWeight="bold">{incident.timestamp}</Text>
         <Text color={incident.status === "resolved" ? "green.500" : "red.500"}>{incident.description}</Text>
+        {incident.estimatedResolution && (
+          <Text fontSize="sm" color="gray.500">
+            Estimated resolution time: {incident.estimatedResolution}
+          </Text>
+        )}
       </Box>
     ))}
   </VStack>
@@ -68,14 +76,14 @@ const IncidentHistory = ({ incidents }) => (
 const Index = () => {
   const systemStatus = "minor"; // This should be dynamic based on actual system status
   const components = [
-    { name: "Core Posting", description: "Limited image uploads until resolution.", status: "minor" },
-    { name: "Messaging", description: "Sending and receiving messages might be delayed.", status: "operational" },
-    { name: "Search", description: "Search functionality is operating normally.", status: "operational" },
-    { name: "API/Developer Tools", description: "API responses may be slow.", status: "partial" },
+    { name: "Core Posting", description: "Limited image uploads.", status: "minor", userImpact: "You might experience slower or failed image uploads." },
+    { name: "Messaging", description: "Potential message delays.", status: "operational", userImpact: "Messages may be delivered with slight delays." },
+    { name: "Search", description: "Search is fully operational.", status: "operational", userImpact: "You should be able to search without any issues." },
+    { name: "API/Developer Tools", description: "API slowness.", status: "partial", userImpact: "Developers might notice increased response times from APIs." },
   ];
   const incidents = [
-    { timestamp: "2023-04-01 10:00 UTC", description: "Issue with image uploads identified.", status: "ongoing" },
-    { timestamp: "2023-04-01 09:00 UTC", description: "API latency issues reported.", status: "resolved" },
+    { timestamp: "2023-04-01 10:00 UTC", description: "Image upload issues ongoing. We are working hard to resolve this as quickly as possible.", status: "ongoing", estimatedResolution: "2023-04-02 18:00 UTC" },
+    { timestamp: "2023-04-01 09:00 UTC", description: "API latency issues have been resolved. Thank you for your patience.", status: "resolved" },
   ];
 
   return (
