@@ -1,5 +1,5 @@
 // Verbatim System Status Page
-import { Box, Grid, Heading, Text, VStack, Button, Icon, Alert, AlertIcon, AlertTitle, AlertDescription, Link } from "@chakra-ui/react";
+import { Box, Grid, Heading, Text, VStack, Button, Icon, Alert, AlertIcon, AlertTitle, AlertDescription, Link, Stack } from "@chakra-ui/react";
 import { FaCheckCircle, FaExclamationTriangle, FaExclamationCircle, FaBell, FaRegCommentDots } from "react-icons/fa";
 
 const SystemStatusBanner = ({ status }) => {
@@ -73,6 +73,28 @@ const IncidentHistory = ({ incidents }) => (
   </VStack>
 );
 
+const LatestUpdates = ({ updates }) => (
+  <Stack align="stretch" spacing={4}>
+    {updates.map((update, index) => (
+      <Box p={5} shadow="md" borderWidth="1px" bg="gray.50" borderRadius="lg" key={index}>
+        <Text fontWeight="bold">{update.timestamp}</Text>
+        <Text>{update.message}</Text>
+      </Box>
+    ))}
+  </Stack>
+);
+
+const ServiceHealthChart = () => {
+  // Placeholder for service health chart component
+  return <Box bg="gray.100" h="200px" borderRadius="md" my={6}></Box>;
+};
+
+const ReportIssueButton = () => (
+  <Button leftIcon={<FaExclamationCircle />} colorScheme="red" mt={3} borderRadius="full" _hover={{ transform: "scale(1.05)" }}>
+    Report an Issue
+  </Button>
+);
+
 const Index = () => {
   const systemStatus = "minor"; // This should be dynamic based on actual system status
   const components = [
@@ -93,8 +115,22 @@ const Index = () => {
         System Components
       </Heading>
       <ComponentGrid components={components} />
+      <Heading my={8} fontSize="2xl" color="gray.700">
+        Latest Updates
+      </Heading>
+      <LatestUpdates
+        updates={[
+          { timestamp: "2024-02-22 12:00 UTC", message: "Maintenance scheduled for 2024-02-23 01:00 UTC to 03:00 UTC." },
+          { timestamp: "2024-02-21 15:30 UTC", message: "Search indexing performance has been improved." },
+        ]}
+      />
+      <Heading my={8} fontSize="3xl" color="gray.700">
+        System Components
+      </Heading>
+      <ComponentGrid components={components} />
       <Heading my={6}>Incident History</Heading>
       <IncidentHistory incidents={incidents} />
+      <ServiceHealthChart />
       <Box my={6}>
         <Heading size="md">Subscribe to Updates</Heading>
         <Button leftIcon={<FaBell />} colorScheme="blue" mt={3} borderRadius="full" _hover={{ transform: "scale(1.05)" }}>
@@ -103,17 +139,7 @@ const Index = () => {
         <Button leftIcon={<FaBell />} colorScheme="blue" mt={3} ml={3}>
           Text Alerts
         </Button>
-        <Button leftIcon={<FaBell />} colorScheme="blue" mt={3} ml={3}>
-          Push Notifications
-        </Button>
-      </Box>
-      <Box my={6}>
-        <Heading size="md">Need Help?</Heading>
-        <Link href="https://community.verbatim.com/forum" isExternal _hover={{ textDecoration: "none" }}>
-          <Button leftIcon={<FaRegCommentDots />} colorScheme="teal" mt={3} borderRadius="full" _hover={{ transform: "scale(1.05)" }}>
-            Visit Our Community Forum
-          </Button>
-        </Link>
+        <ReportIssueButton />
       </Box>
     </Box>
   );
